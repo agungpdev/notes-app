@@ -19,22 +19,25 @@ class NotesApp extends React.Component {
   }
 
   onFilterNotesHandler(query) {
-    this.setState((prevState) => {
-      const newNotes = [...prevState.notes];
+    this.setState(
+      { search: query }
+      // () => {
+      //   const newNotes = [...prevState.notes];
 
-      if (query.length == 0) {
-        return { search: query, notes: getInitialData() };
-      }
+      //   if (query.length == 0) {
+      //     return { search: query, notes: getInitialData() };
+      //   }
 
-      const filterNotes = newNotes.filter(
-        (item) =>
-          item.title
-            .toString()
-            .toLowerCase()
-            .indexOf(query.toString().toLowerCase()) !== -1
-      );
-      return { search: query, notes: filterNotes };
-    });
+      //   const filterNotes = newNotes.filter(
+      //     (item) =>
+      //       item.title
+      //         .toString()
+      //         .toLowerCase()
+      //         .indexOf(query.toString().toLowerCase()) !== -1
+      //   );
+      //   return { search: query, notes: filterNotes };
+      // });
+    );
   }
 
   onAddNotesHandler({ title, body }) {
@@ -74,6 +77,10 @@ class NotesApp extends React.Component {
     }
   }
   render() {
+    // fitur search
+    const filterNotes = this.state.notes.filter((item) =>
+      item.title.toLowerCase().includes(this.state.search.toLowerCase())
+    );
     return (
       <>
         <NotesHeader
@@ -83,13 +90,13 @@ class NotesApp extends React.Component {
         <div className="container">
           <NotesInput addNotes={this.onAddNotesHandler} />
           <NotesActive
-            notes={this.state.notes}
+            notes={filterNotes}
             date={showFormattedDate}
             onDelete={this.onDeleteHandler}
             onMove={this.onMoveHandler}
           />
           <NotesArchive
-            notes={this.state.notes}
+            notes={filterNotes}
             date={showFormattedDate}
             onDelete={this.onDeleteHandler}
             onMove={this.onMoveHandler}
